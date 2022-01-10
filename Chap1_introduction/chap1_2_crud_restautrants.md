@@ -184,6 +184,14 @@ Par exemple on sélectionne les restaurants qui font de la cuisine Delicatessen 
 db.restaurants.find({ cuisine: "Delicatessen" }, {_id : 0, cuisine : 1, address : 1}).pretty()
 ```
 
+### 001 Exercice
+
+Affichez les noms des restaurants Italian.
+
+Affichez les noms des restaurants Italian du Bronx (borough)
+
+Comptez le nombre de restaurants Italian dans tout la collection puis les restaurants Italians dans le Bronx.
+
 ### Opérateur IN
 
 Vous pouvez également utiliser les query operators comme dans l'exemple suivant, ici on cherche à sélectionner les types de cuisines Delicatessen ou American dans la collection restaurants
