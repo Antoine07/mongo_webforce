@@ -244,12 +244,11 @@ db.authors.find( { $or: [ { name: "Alan" }, { name: "Alice" } ] } )
 Voici un exemple de condition logique en utilisant OR et AND. Remarquez le deuxième argument de la méthode find, il permet de faire une projection, c'est-à-dire de sélectionner uniquement certaine(s) propriété(s) du document :
 
 ```js
-
-db.restaurants.find( {
-     borough: "Brooklyn",
-     $or: [ { name: /^B/ }, { name : /^W/} ]
-}, {"name" : 1, "borough" : 1} )
-
+db.restaurants.find( { $and : [
+   { "borough" : "Brooklyn"}, 
+   { $or: [ { name: /^B/ }, { name : /^W/} ] } 
+   ] 
+  }, { _id: 0, name : 1})
 ```
 
 ## Exercice 
