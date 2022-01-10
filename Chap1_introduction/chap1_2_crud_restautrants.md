@@ -186,6 +186,11 @@ db.restaurants.find({ cuisine: "Delicatessen" }, {_id : 0, cuisine : 1, address 
 
 ### 001 Exercice
 
+```js
+// Tous les noms des restaurants
+db.restaurants.distinct('cuisine')
+```
+
 Affichez les noms des restaurants Italian.
 
 Affichez les noms des restaurants Italian du Bronx (borough)
