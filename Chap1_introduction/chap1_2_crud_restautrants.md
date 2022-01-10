@@ -256,14 +256,16 @@ db.restaurants.find( { $and : [
 Trouvez tous les restaurants dont le nom contient un s, sans casse.
 
 ```js
-
-
+db.restaurants.find( {name: /s/i }, { name: 1, _id : 0} )
 ```
 
 Tous les restaurants qui commence par un R majuscule et se termine par un s minuscule.
 
 ```js
+db.restaurants.find( { $and : [ { name : /^R/}, { name : /s$/ } ] }, { name: 1, _id : 0} )
 
+// .* <=> . n'importe quel caractère et * de 0 à autant qu'on veut
+db.restaurants.find( { name : /^R.*s$/ }, { name: 1, _id : 0} )
 ```
 
 Tous les restaurants se terminant par s :
