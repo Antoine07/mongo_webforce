@@ -193,9 +193,21 @@ db.restaurants.distinct('cuisine')
 
 Affichez les noms des restaurants Italian.
 
+```js
+db.restaurants.find({ cuisine: "Italian" }, {_id: 0, name : 1})
+```
+
 Affichez les noms des restaurants Italian du Bronx (borough)
 
+```js
+db.restaurants.find({ cuisine: "Italian", borough: "Bronx" }, {_id: 0, name : 1})
+```
+
 Comptez le nombre de restaurants Italian dans tout la collection puis les restaurants Italians dans le Bronx.
+
+```js
+db.restaurants.find({ cuisine: "Italian", borough: "Bronx"  }).count()
+```
 
 ### Opérateur IN
 
