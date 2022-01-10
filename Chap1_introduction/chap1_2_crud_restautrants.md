@@ -257,32 +257,19 @@ Trouvez tous les restaurants dont le nom contient un s, sans casse.
 
 ```js
 
-db.restaurants.find( { name : /s/ }, { name : 1})
-// l'option i désigne insensible à la casse
-db.restaurants.find( { name : /s/i }, { name : 1})
-
-db.restaurants.find( { name : /S/ }, { name : 1})
-
-db.restaurants.find( { name : /S{1}/ }, { name : 1})
 
 ```
 
 Tous les restaurants qui commence par un R majuscule et se termine par un s minuscule.
 
 ```js
-db.restaurants.find( { name : /^R.*s$/ }, { name : 1})
-/*
-. n'importe quel caractère
-* de 0 à N 
-^ commence par 
-$ se termine par
-*/
+
 ```
 
 Tous les restaurants se terminant par s :
 
 ```js
-db.restaurants.find( { name : /s$/ }, { name : 1})
+
 
 
 ```
@@ -323,21 +310,13 @@ Sans utiliser la méthode count dans un premier temps comptez le nombre de resta
 Pour itérer sur une requête vous utiliserez l'une des deux syntaxes suivantes :
 
 ```js
-// 1
-db.collection.find({ query }).forEach(doc => print(tojson(doc)))
 
-// 2
-const myCursor = db.users.find( query );
-
-while (myCursor.hasNext()) {
-   print(tojson(myCursor.next())); // pour passer au document suivant
-}
 ```
 
 Puis comparez le résultat avec la méthode count :
 
 ```js
-db.collection.findOne(query, restriction).count()
+
 ```
 
 ### 2. Exercices sur la notion de filtrage
@@ -345,72 +324,6 @@ db.collection.findOne(query, restriction).count()
 Exemple de filtres classiques :
 
 ```js
-// plus grand que
-$gt, $gte
-
-// Plus petit que
-$lt, $lte
-
-// collection inventory  quantité < 10 
-db.inventory.find( { quantity : { $lt: 20 } } )
-
-```
-
-D'autres filtres :
-
-```js
-// différent de
-$ne
-"number" : {"$ne" : 10}
-
-// fait partie de ...
-$in, $nin
-"notes" : {"$in" : [10, 12, 15, 18] }
-"notes" : {"$nin" : [10, 12, 15, 18] }
-
-// Ou
-$or
-"notes : { "$or": [{"$gt" : 10}, {"$lt" : 5} ] }
-// and
-$and
-
-"notes : { "$and": [{"$gt" : 10}, {"$lt" : 5} ] }
-
-// négation
-$not
-"notes" : {"$not" : {"$lt" : 10} }
-
-// existe
-$exists
-"notes" : {"$exists" : true}
-
-// tous les documents qui possède(nt) la propriété level
-db.inventory.find( { level : { $exists: true } } )
-
-// tous les documents qui ne possède(nt) pas la propriété level
-db.inventory.find( { level : { $exists: false } } )
-
-// test sur la taille d'une liste
-$size
-"notes" : {"$size" : 4}
-
-// element match
-
-/*
-{
-    "content" : [
-        { "name" : <string>, year: <number>, by: <string> } 
-        ...
-    ]
-}
-*/
-
-
-{ "content": { $elemMatch: { "name": "Turing Award", "year": { $gt: 1980 } } } }
-
-// recherche avec une Regex
-$regex
-{ "name": { $regex: /^A/ } }
 
 ```
 
@@ -421,7 +334,6 @@ Affichez également le nom, les scores et les coordonnées GPS de ces restaurant
 Remarque pour la dernière partie de la question utilisez la méthode sort :
 
 ```js
-db.collection.findOne(query, restriction).sort({ key : 1 }) // 1 pour ordre croissant et -1 pour décroissant
 ```
 
 - 2. Quels sont les restaurants qui ont un grade A avec un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat. 
@@ -429,7 +341,6 @@ db.collection.findOne(query, restriction).sort({ key : 1 }) // 1 pour ordre croi
 Remarque pour la dernière partie de la question utilisez la méthode count :
 
 ```js
-db.collection.findOne(query, restriction).count()
 ```
 
 - 3. A l'aide de la méthode distinct trouvez tous les quartiers distincts de NY.
@@ -437,7 +348,6 @@ db.collection.findOne(query, restriction).count()
 - 4. Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
 
 ```js
-db.restaurants.distinct('field', {"key" : "value" })
 ```
 
 - 5. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
