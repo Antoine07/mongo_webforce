@@ -76,3 +76,32 @@ db.restaurants.find({
         { grades : { $size: 4 } }
     ]
 }).count();
+
+// 07
+
+db.restaurants.find({
+    $and : [
+        {
+            $or : [ { "grades.grade" : "A" }, { "grades.grade" : "B" } ]
+        },
+        {
+            "borough" : "Bronx"
+        }
+    ]
+    },
+    { "_id" : 0, "name" : 1,  "gardes.grade" : 1 } 
+).count()
+
+// 08
+db.restaurants.find({
+    $and : [
+        {
+            $or : [ { "grades.0.grade" : "A" }, { "grades.0.grade" : "B" } ]
+        },
+        {
+            "borough" : "Bronx"
+        }
+    ]
+    },
+    { "_id" : 0, "name" : 1,  "gardes.grade" : 1 } 
+).count()
