@@ -289,8 +289,9 @@ db.restaurants.find({
     name: /s{1}/i
 },{_id: 0, name : 1, borough :1})
 
+```
 
-Cela correspondrait (...) en SQL à la requête suivante :
+Exemple en SQL avec une recherche sur des motifs que l'on cherche dans une chaîne de caractères.
 
 ```sql
 SELECT
