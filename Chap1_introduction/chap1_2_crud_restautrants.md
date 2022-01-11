@@ -271,10 +271,24 @@ db.restaurants.find( { name : /^R.*s$/ }, { name: 1, _id : 0} )
 Tous les restaurants se terminant par s :
 
 ```js
-
-
-
+db.restaurants.find({
+    name: /s$/i
+},{_id: 0, name : 1, borough :1})
 ```
+
+Quelques exemples avec l'expression régulière
+
+```js
+// Deux s colés
+db.restaurants.find({
+    name: /ss/
+},{_id: 0, name : 1, borough :1})
+
+// Au moins un s dans le nom avec le flag i <=> insensible à la casse
+db.restaurants.find({
+    name: /s{1}/i
+},{_id: 0, name : 1, borough :1})
+
 
 Cela correspondrait (...) en SQL à la requête suivante :
 
