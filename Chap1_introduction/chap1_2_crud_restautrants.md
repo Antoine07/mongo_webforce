@@ -345,6 +345,21 @@ while (cursor.hasNext()) {
 }
 ```
 
+## 002 Exercice recherche name inexistant
+
+Recherchez tous les restaurants dans Brooklyn qui n'ont pas de nom
+
+- Soit la personne qui a enregistré les données a oublié de renseigner ce champ, dans ce cas il est vide.
+
+- Soit dans le document lui-même la propriété name n'existe pas.
+
+Testez l'une et l'autre approche décrite ci-dessus et éventuellement proposez une requête qui ferait la synthèse des deux approches.
+
+```js
+// champ qui n'existe pas
+db.collections.find( { a: { $exists: false } } )
+```
+
 ### 2. Exercices sur la notion de filtrage
 
 Exemple de filtres classiques :
