@@ -232,15 +232,11 @@ db.restaurants.find( {
 Trouvez tous les restaurants dont le nom contient un s, sans casse.
 
 ```js
-
 db.restaurants.find( { name : /s/ }, { name : 1})
 // l'option i désigne insensible à la casse
 db.restaurants.find( { name : /s/i }, { name : 1})
-
 db.restaurants.find( { name : /S/ }, { name : 1})
-
 db.restaurants.find( { name : /S{1}/ }, { name : 1})
-
 ```
 
 Tous les restaurants qui commence par un R majuscule et se termine par un s minuscule.
@@ -259,8 +255,6 @@ Tous les restaurants se terminant par s :
 
 ```js
 db.restaurants.find( { name : /s$/ }, { name : 1})
-
-
 ```
 
 Cela correspondrait (...) en SQL à la requête suivante :
@@ -313,7 +307,24 @@ while (myCursor.hasNext()) {
 Puis comparez le résultat avec la méthode count :
 
 ```js
-db.collection.findOne(query, restriction).count()
+db.collection.find(query).count()
+```
+
+Remarques pour afficher des données avec un foreEach ou la méthode hasNext next
+
+```js
+// 1
+db.restaurants.find({ name: /ss/ }).forEach(
+  doc => print(doc.name)
+)
+
+// 2
+const cursor = db.restaurants.find( { name: /ss/ } );
+
+while (cursor.hasNext()) {
+   const doc = cursor.next(); 
+   print(doc.name);
+}
 ```
 
 ### 2. Exercices sur la notion de filtrage
