@@ -349,9 +349,21 @@ while (cursor.hasNext()) {
 
 Recherchez tous les restaurants dans Brooklyn qui n'ont pas de nom
 
-- Soit la personne qui a enregistré les données a oublié de renseigner ce champ, dans ce cas il est vide.
+- Soit la personne qui a enregistré les données a oublié de renseigner ce champ qui existe, dans ce cas il est vide.
+
+```js
+// champ qui n'existe pas
+db.restaurants.find( { borough : "Brooklyn", name: "" } ).count()
+// 40
+```
 
 - Soit dans le document lui-même la propriété name n'existe pas.
+
+```js
+// champ qui n'existe pas
+db.restaurants.find( { borough : "Brooklyn", name: { $exists : false } } ).count()
+// 0
+```
 
 Testez l'une et l'autre approche décrite ci-dessus et éventuellement proposez une requête qui ferait la synthèse des deux approches.
 
