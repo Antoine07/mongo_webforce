@@ -328,11 +328,15 @@ Pour itérer sur une requête vous utiliserez l'une des deux syntaxes suivantes 
 
 ```js
 
-```
+// 1
+db.collection.find({ query }).forEach(doc => print(tojson(doc)))
 
-Puis comparez le résultat avec la méthode count :
+// 2
+const myCursor = db.users.find( query );
 
-```js
+while (myCursor.hasNext()) {
+   print(tojson(myCursor.next())); // pour passer au document suivant
+}
 
 ```
 
