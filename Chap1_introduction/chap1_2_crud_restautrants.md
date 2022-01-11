@@ -184,6 +184,31 @@ Par exemple on sélectionne les restaurants qui font de la cuisine Delicatessen 
 db.restaurants.find({ cuisine: "Delicatessen" }, {_id : 0, cuisine : 1, address : 1}).pretty()
 ```
 
+### 001 Exercice
+
+```js
+// Tous les noms des restaurants
+db.restaurants.distinct('cuisine')
+```
+
+Affichez les noms des restaurants Italian.
+
+```js
+db.restaurants.find({ cuisine: "Italian" }, {_id: 0, name : 1})
+```
+
+Affichez les noms des restaurants Italian du Bronx (borough)
+
+```js
+db.restaurants.find({ cuisine: "Italian", borough: "Bronx" }, {_id: 0, name : 1})
+```
+
+Comptez le nombre de restaurants Italian dans tout la collection puis les restaurants Italians dans le Bronx.
+
+```js
+db.restaurants.find({ cuisine: "Italian", borough: "Bronx"  }).count()
+```
+
 ### Opérateur IN
 
 Vous pouvez également utiliser les query operators comme dans l'exemple suivant, ici on cherche à sélectionner les types de cuisines Delicatessen ou American dans la collection restaurants
@@ -219,12 +244,11 @@ db.authors.find( { $or: [ { name: "Alan" }, { name: "Alice" } ] } )
 Voici un exemple de condition logique en utilisant OR et AND. Remarquez le deuxième argument de la méthode find, il permet de faire une projection, c'est-à-dire de sélectionner uniquement certaine(s) propriété(s) du document :
 
 ```js
-
-db.restaurants.find( {
-     borough: "Brooklyn",
-     $or: [ { name: /^B/ }, { name : /^W/} ]
-}, {"name" : 1, "borough" : 1} )
-
+db.restaurants.find( { $and : [
+   { "borough" : "Brooklyn"}, 
+   { $or: [ { name: /^B/ }, { name : /^W/} ] } 
+   ] 
+  }, { _id: 0, name : 1})
 ```
 
 ## Exercice 
@@ -239,25 +263,21 @@ db.restaurants.find( { name : /S/ }, { name : 1})
 db.restaurants.find( { name : /S{1}/ }, { name : 1})
 ```
 
-Tous les restaurants qui commence par un R majuscule et se termine par un s minuscule.
+Tous les restaurants se terminant par s :
 
 ```js
-db.restaurants.find( { name : /^R.*s$/ }, { name : 1})
-/*
-. n'importe quel caractère
-* de 0 à N 
-^ commence par 
-$ se termine par
-*/
+db.restaurants.find({
+    name: /s$/i
+},{_id: 0, name : 1, borough :1})
 ```
 
-Tous les restaurants se terminant par s :
+Quelques exemples avec l'expression régulière
 
 ```js
 db.restaurants.find( { name : /s$/ }, { name : 1})
 ```
 
-Cela correspondrait (...) en SQL à la requête suivante :
+Exemple en SQL avec une recherche sur des motifs que l'on cherche dans une chaîne de caractères.
 
 ```sql
 SELECT
@@ -293,6 +313,7 @@ Sans utiliser la méthode count dans un premier temps comptez le nombre de resta
 Pour itérer sur une requête vous utiliserez l'une des deux syntaxes suivantes :
 
 ```js
+
 // 1
 db.collection.find({ query }).forEach(doc => print(tojson(doc)))
 
@@ -302,11 +323,8 @@ const myCursor = db.users.find( query );
 while (myCursor.hasNext()) {
    print(tojson(myCursor.next())); // pour passer au document suivant
 }
-```
 
-Puis comparez le résultat avec la méthode count :
-
-```js
+// compter normalement
 db.collection.find(query).count()
 ```
 
@@ -332,72 +350,6 @@ while (cursor.hasNext()) {
 Exemple de filtres classiques :
 
 ```js
-// plus grand que
-$gt, $gte
-
-// Plus petit que
-$lt, $lte
-
-// collection inventory  quantité < 10 
-db.inventory.find( { quantity : { $lt: 20 } } )
-
-```
-
-D'autres filtres :
-
-```js
-// différent de
-$ne
-"number" : {"$ne" : 10}
-
-// fait partie de ...
-$in, $nin
-"notes" : {"$in" : [10, 12, 15, 18] }
-"notes" : {"$nin" : [10, 12, 15, 18] }
-
-// Ou
-$or
-"notes : { "$or": [{"$gt" : 10}, {"$lt" : 5} ] }
-// and
-$and
-
-"notes : { "$and": [{"$gt" : 10}, {"$lt" : 5} ] }
-
-// négation
-$not
-"notes" : {"$not" : {"$lt" : 10} }
-
-// existe
-$exists
-"notes" : {"$exists" : true}
-
-// tous les documents qui possède(nt) la propriété level
-db.inventory.find( { level : { $exists: true } } )
-
-// tous les documents qui ne possède(nt) pas la propriété level
-db.inventory.find( { level : { $exists: false } } )
-
-// test sur la taille d'une liste
-$size
-"notes" : {"$size" : 4}
-
-// element match
-
-/*
-{
-    "content" : [
-        { "name" : <string>, year: <number>, by: <string> } 
-        ...
-    ]
-}
-*/
-
-
-{ "content": { $elemMatch: { "name": "Turing Award", "year": { $gt: 1980 } } } }
-
-// recherche avec une Regex
-$regex
-{ "name": { $regex: /^A/ } }
 
 ```
 
@@ -408,7 +360,6 @@ Affichez également le nom, les scores et les coordonnées GPS de ces restaurant
 Remarque pour la dernière partie de la question utilisez la méthode sort :
 
 ```js
-db.collection.findOne(query, restriction).sort({ key : 1 }) // 1 pour ordre croissant et -1 pour décroissant
 ```
 
 - 2. Quels sont les restaurants qui ont un grade A avec un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat. 
@@ -416,7 +367,6 @@ db.collection.findOne(query, restriction).sort({ key : 1 }) // 1 pour ordre croi
 Remarque pour la dernière partie de la question utilisez la méthode count :
 
 ```js
-db.collection.findOne(query, restriction).count()
 ```
 
 - 3. A l'aide de la méthode distinct trouvez tous les quartiers distincts de NY.
@@ -424,7 +374,6 @@ db.collection.findOne(query, restriction).count()
 - 4. Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
 
 ```js
-db.restaurants.distinct('field', {"key" : "value" })
 ```
 
 - 5. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
