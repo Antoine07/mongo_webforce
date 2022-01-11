@@ -35,3 +35,13 @@ db.restaurants.find(
 );
 
 print(`Nombre de restaurants dans Brooklyn: ${count}`);
+
+// liste d'exercice combien 
+
+db.restaurants.find({
+    $and: [
+        { cuisine: "Italian" },
+        { "grades.score": { $in: [10] } }
+    ]
+}, { _id: 0, "grades.score": 1, name: 1, "address.coord": 1 }).sort({ name: 1 }).count();
+
