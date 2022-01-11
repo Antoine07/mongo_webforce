@@ -38,6 +38,7 @@ print(`Nombre de restaurants dans Brooklyn: ${count}`);
 
 // liste d'exercice combien 
 
+// 01
 db.restaurants.find({
     $and: [
         { cuisine: "Italian" },
@@ -45,3 +46,33 @@ db.restaurants.find({
     ]
 }, { _id: 0, "grades.score": 1, name: 1, "address.coord": 1 }).sort({ name: 1 }).count();
 
+
+// 02 03
+db.restaurants.find(
+    { "grades.grade": "A", "grades.score": { $gte: 20 } },
+    { _id: 0, name: 1 }).sort(
+    { name: -1 }
+).sort({ name : -1}).pretty();
+
+db.restaurants.find({ "grades.grade": "A", "grades.score": { $gte: 20 } }).count(); // 6312
+
+// 04
+db.restaurants.distinct("borough");
+
+// 05
+db.restaurants.distinct("cuisine", { borough : "Bronx"});
+
+// 06
+db.restaurants.find({
+    $and: [
+        { borough: "Bronx" },
+        { grades : { $size: 4 } }
+    ]
+}, { _id: 0, grades: 1, name: 1}).sort({ name: 1 }).pretty();
+
+db.restaurants.find({
+    $and: [
+        { borough: "Bronx" },
+        { grades : { $size: 4 } }
+    ]
+}).count();
